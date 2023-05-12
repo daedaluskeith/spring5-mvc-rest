@@ -1,10 +1,12 @@
 package guru.springfamework.api.v1.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
 import guru.springfamework.api.v1.model.VendorDTO;
 import guru.springfamework.domain.Vendor;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 
 public class VendorMapperTest {
 

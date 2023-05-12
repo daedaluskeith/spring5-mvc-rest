@@ -1,5 +1,21 @@
 package guru.springfamework.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import guru.springfamework.api.v1.mapper.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.bootstrap.Bootstrap;
@@ -7,25 +23,12 @@ import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
 import guru.springfamework.repositories.VendorRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
 
 /**
  * Created by jt on 10/3/17.
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 @DataJpaTest
 public class CustomerServiceImplIT {
 
@@ -40,7 +43,7 @@ public class CustomerServiceImplIT {
 
     CustomerService customerService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         System.out.println("Loading Customer Data");
         System.out.println(customerRepository.findAll().size());
@@ -72,8 +75,8 @@ public class CustomerServiceImplIT {
 
         assertNotNull(updatedCustomer);
         assertEquals(updatedName, updatedCustomer.getFirstname());
-        assertThat(originalFirstName, not(equalTo(updatedCustomer.getFirstname())));
-        assertThat(originalLastName, equalTo(updatedCustomer.getLastname()));
+        assertNotEquals(originalFirstName, updatedCustomer.getFirstname());
+        assertEquals(originalLastName, updatedCustomer.getLastname());
     }
 
     @Test
@@ -97,8 +100,8 @@ public class CustomerServiceImplIT {
 
         assertNotNull(updatedCustomer);
         assertEquals(updatedName, updatedCustomer.getLastname());
-        assertThat(originalFirstName, equalTo(updatedCustomer.getFirstname()));
-        assertThat(originalLastName, not(equalTo(updatedCustomer.getLastname())));
+        assertEquals(originalFirstName, updatedCustomer.getFirstname());
+        assertNotEquals(originalLastName, updatedCustomer.getLastname());
     }
 
     private Long getCustomerIdValue(){
